@@ -4,10 +4,10 @@
 sudo apt-get update
 
 # Install apache2 for server hosting
-sudo apt-get -y install httpd
+sudo apt-get -y install apache2
 
 # Start apache2 to start hosting
-sudo systemctl start httpd
+sudo systemctl start apache2
 
 mkdir -p /var/www/html
 
