@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source utils.sh
-jcu_id=""
 ami_id="ami-0655cec52acf2717b"
 sec_group_name="webserver group"
 
