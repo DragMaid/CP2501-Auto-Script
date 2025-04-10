@@ -16,9 +16,6 @@ sudo apt update
 # Install apache2 for server hosting
 sudo apt -y install apache2
 
-# Install nodejs and npm
-# sudo apt -y install nodejs npm
-
 # Install production process manager for nodejs (pm2)
 npm install pm2@latest -g
 
