@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source utils.sh
-jcu_id=""
 ami_id="ami-0655cec52acf2717b"
 sec_group_name="webserver group"
 
@@ -167,4 +166,7 @@ async_task "$var" "$command" "$prompt"
 
 echo "$(get_log_format SUCCESS) EC2 instance successfully created with id: $ec2_id"
 echo "$(get_log_format SUCCESS) Server is now up and running on IP: $ec2_ip (port: 80)"
-ssh -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip "bash -lc 'source ~/.nvm/nvm.sh; pm2 list'"
+
+if [ "$install_file" == "websetup.sh" ]; then
+    ssh -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip "bash -lc 'source ~/.nvm/nvm.sh; pm2 list'"
+fi
