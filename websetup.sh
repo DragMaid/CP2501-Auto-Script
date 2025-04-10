@@ -1,4 +1,4 @@
-jcu_id=""
+#!/bin/bash
 
 # Install node manager (nvm) from web using curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -7,17 +7,16 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source "$HOME/.bashrc"
 source "$HOME/.nvm/nvm.sh"
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Install the latest version of nodejs using nvm
 nvm install --lts
 
 # Update apt link sources
-sudo apt update
+sudo apt-get update
 
 # Install apache2 for server hosting
-sudo apt -y install apache2
-
-# Install nodejs and npm
-# sudo apt -y install nodejs npm
+sudo apt-get -y install apache2
 
 # Install production process manager for nodejs (pm2)
 npm install pm2@latest -g
@@ -54,7 +53,7 @@ cd astro-dog
 git checkout origin/deploy -b deploy
 
 # Edit main menu and add in JCU ID
-sed -i "54s/>/ value="$jcu_id">/" ~/astro-dog/public/index.html
+sed -i "54s/>/ value="$1">/" ~/astro-dog/public/index.html
 
 # Run the web application (using pm2 installed above)
 pm2 start ~/astro-dog/server-dev.js
