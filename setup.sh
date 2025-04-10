@@ -4,17 +4,6 @@ source utils.sh
 ami_id="ami-0655cec52acf2717b"
 sec_group_name="webserver group"
 
-if [ "$1" == "simple" ] || [ "$1" == "" ]; then
-    install_file="websetup-simple.sh"
-elif [ "$1" == "advanced" ]; then
-    install_file="websetup.sh"
-else
-    echo "Only 2 options are available: simple[default] or advanced"
-    exit 1
-fi
-
-cp credentials $HOME/.aws/credentials
-
 var="vpc_id"
 prompt="$(get_log_format) Creating a new VPC (cidr: 10.0.0.0/16)"
 command="aws ec2 create-vpc --cidr-block 10.0.0.0/16 --query Vpc.VpcId --output text"
@@ -171,8 +160,8 @@ command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking n
 async_task "$var" "$command" "$prompt"
 
 var=""
-prompt="$(get_log_format) Running webserver setup process via SSH"
-command="ssh -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip '~/websetup.sh $jcu_id 2>&1 | tee $(get_log_format LOG).log'"
+prompt="$(get_log_format) Connecting to EC2 instance session via SSH"
+command="ssh -i ~/.ssh/id_aweb.pem -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip '~/websetup.sh'"
 async_task "$var" "$command" "$prompt"
 
 echo "$(get_log_format SUCCESS) EC2 instance successfully created with id: $ec2_id"

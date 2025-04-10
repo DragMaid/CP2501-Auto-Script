@@ -9,6 +9,7 @@ sudo apt-get -y install apache2
 # Start apache2 to start hosting
 sudo systemctl start apache2
 
+# Create the website folder if not already created
 mkdir -p /var/www/html
 
 # Write simple website to host
