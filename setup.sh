@@ -169,6 +169,7 @@ iconv -f WINDOWS-1252 -t UTF-8 ./$install_file > ./$install_file.utf8
 sed -i 's/\xE2\x80\x93//g' ./$install_file.utf8
 sed -i 's/\r//g' ./$install_file
 mv ./$install_file.utf8 ./$install_file
+chmod +x ./$install_file
 
 var=""
 prompt="$(get_log_format) Copying web server setup file to EC2 instance"
