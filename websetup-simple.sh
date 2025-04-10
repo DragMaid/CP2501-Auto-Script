@@ -9,5 +9,7 @@ sudo apt-get -y install httpd
 # Start apache2 to start hosting
 sudo systemctl start httpd
 
+mkdir -p /var/www/html
+
 # Write simple website to host
-echo "Hello from $1 web server" | sudo tee /var/www/html/index.html
+echo "<h1>Hello from $1 web server</h1>" | sudo tee /var/www/html/index.html
