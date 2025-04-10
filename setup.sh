@@ -3,6 +3,17 @@
 source utils.sh
 ami_id="ami-0655cec52acf2717b"
 sec_group_name="webserver group"
+install_file="websetup-simple.sh"
+
+if [ "$1" == "custom" ]; then
+    install_file="websetup.sh"
+fi
+
+mkdir -p $HOME/.aws/
+iconv -f WINDOWS-1252 -t UTF-8 credentials > credentials.utf8
+sed -i 's/\xE2\x80\x93//g' credentials.utf8
+mv credentials.utf8 credentials
+cp credentials $HOME/.aws/credentials
 
 var="vpc_id"
 prompt="$(get_log_format) Creating a new VPC (cidr: 10.0.0.0/16)"
@@ -154,14 +165,24 @@ prompt="$(get_log_format) Waiting for EC2 instance to finish initializing"
 command="source ./utils.sh; wait_ec2_init 10 $ec2_id"
 async_task "$var" "$command" "$prompt"
 
+iconv -f WINDOWS-1252 -t UTF-8 ./$install_file > ./$install_file.utf8
+sed -i 's/\xE2\x80\x93//g' ./$install_file.utf8
+sed -i 's/\r//g' ./$install_file
+mv ./$install_file.utf8 ./$install_file
+
 var=""
 prompt="$(get_log_format) Copying web server setup file to EC2 instance"
-command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ./$install_file ubuntu@$ec2_ip:/home/ubuntu/websetup.sh"
+command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ./$install_file ubuntu@$ec2_ip:/home/ubuntu/websetup.sh"
 async_task "$var" "$command" "$prompt"
 
 var=""
-prompt="$(get_log_format) Connecting to EC2 instance session via SSH"
-command="ssh -i ~/.ssh/id_aweb.pem -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip '~/websetup.sh'"
+prompt="$(get_log_format) Setting up webserver on EC2 instance via SSH"
+command="ssh -i ~/.ssh/id_aweb.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$ec2_ip '~/websetup.sh $jcu_id 2>&1 | tee webserver.log'"
+async_task "$var" "$command" "$prompt"
+
+var=""
+prompt="$(get_log_format) Retrieving web server setup logfile to local machine"
+command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ubuntu@$ec2_ip:/home/ubuntu/webserver.log ./webserver.log"
 async_task "$var" "$command" "$prompt"
 
 echo "$(get_log_format SUCCESS) EC2 instance successfully created with id: $ec2_id"

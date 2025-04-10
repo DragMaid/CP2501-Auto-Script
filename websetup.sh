@@ -1,4 +1,4 @@
-jcu_id=""
+#!/bin/bash
 
 # Install node manager (nvm) from web using curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -51,7 +51,7 @@ cd astro-dog
 git checkout origin/deploy -b deploy
 
 # Edit main menu and add in JCU ID
-sed -i "54s/>/ value="$jcu_id">/" ~/astro-dog/public/index.html
+sed -i "54s/>/ value="$1">/" ~/astro-dog/public/index.html
 
 # Run the web application (using pm2 installed above)
 pm2 start ~/astro-dog/server-dev.js
