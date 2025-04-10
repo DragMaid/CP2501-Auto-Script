@@ -168,7 +168,7 @@ async_task "$var" "$command" "$prompt"
 
 var=""
 prompt="$(get_log_format) Copying web server setup file to EC2 instance"
-command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ./$install_file ubuntu@$ec2_ip:/home/ubuntu/wbsetup.sh"
+command="scp -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ./$install_file ubuntu@$ec2_ip:/home/ubuntu/websetup.sh"
 async_task "$var" "$command" "$prompt"
 
 var=""
