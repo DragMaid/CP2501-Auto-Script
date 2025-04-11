@@ -169,6 +169,7 @@ iconv -f WINDOWS-1252 -t UTF-8 ./$install_file > ./$install_file.utf8
 sed -i 's/\xE2\x80\x93//g' ./$install_file.utf8
 sed -i 's/\r//g' ./$install_file
 mv ./$install_file.utf8 ./$install_file
+chmod +x ./$install_file
 
 var=""
 prompt="$(get_log_format) Copying web server setup file to EC2 instance"
@@ -187,6 +188,7 @@ async_task "$var" "$command" "$prompt"
 
 echo "$(get_log_format SUCCESS) EC2 instance successfully created with id: $ec2_id"
 echo "$(get_log_format SUCCESS) Server is now up and running on IP: $ec2_ip (port: 80)"
+echo "$(get_log_format INFO) You can now access your website at http://$ec2_ip"
 
 if [ "$install_file" == "websetup.sh" ]; then
     ssh -i ~/.ssh/id_aweb.pem -o LogLevel=ERROR -o 'StrictHostKeyChecking no' -o 'UserKnownHostsFile /dev/null' ubuntu@$ec2_ip "bash -lc 'source ~/.nvm/nvm.sh; pm2 list'"

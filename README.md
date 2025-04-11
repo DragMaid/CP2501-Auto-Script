@@ -9,24 +9,62 @@ the lab is terminated due to time limit.
 
 # Pre-Installation
 ## Windows
-+ Option 1: Just use windows Powershell to run the script (do be aware of the dependencies since you'll need git, ssh and you'll need to edit the ssh key location in the script, hence I preferably recommend option 2)
-+ Option 2: Download and install WSL on your machine [instructions](https://learn.microsoft.com/en-us/windows/wsl/install) then download your desired distro on the Microsoft Store
+- Download and Install git bash from [here](https://git-scm.com/downloads)
+- Launch "Git Bash" program on your machine
+- Run this command in git bash to install  aws-cli (v2) using msiexec
+ ```
+ powershell -Command "msiexec /i https://awscli.amazonaws.com/AWSCLIV2.msi /norestart"
+ ```
+
+## MacOS
+- Open up the terminal on your machine
+- Run the following command to install aws-cli (v2)
+```
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+```
+
+
 ## Linux
-+ Install "aws-cli-v2" via your distro package manager. For the arch users out there:
++ Open up the terminal on your machine
++ Use your distro package manager to install aws-cli (v2) or just run the following commands:
 ```
-sudo pacman -S aws-cli-v2
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 ```
+
 
 # Instructions
 1. Open the aws lab environment from the practical no.5 of the subject
-2. Clone the repository back to your local machine
-3. Start the aws lab session and wait for it to start
-4. Click on "AWS details" on the top right of the screen
-5. Click show in the AWS-CLI section and copy the code block
-6. Run aws configure (skip most prompts except region - insert us-east-1 (the only region available))
-7. Open the file ~/.aws/credentials with a code editor and paste the previously copied code block
-8. Run "bash setup.sh" in the project directory
-9. Sit back and enjoy the show
+2. Start the aws lab session and wait for it to start
+3. Click on "AWS details" on the top right of the screen
+![General Instructon 1 for AWS](/assets/instructions1.png)
+
+4. Click "show" in the AWS-CLI section and copy the credential
+![General Instructon 2 for AWS](/assets/instructions2.png)
+   
+5. Open terminal (or git bash) and run aws configure (skip most prompts except "region") (insert "east-us-1)
+![General Instructon 2 for AWS](/assets/configure.png)
+
+6. Clone the repository back to your local machine
+```
+git clone https://github.com/DragMaid/CP2501-Auto-Script.git
+```
+7. Change directory into the project
+```
+cd CP2501-Auto-Script
+```
+8. Open the "credentials" file in that directory and paste in the "<credential>" you copied before
+9. Set the jcu_id variable so it dynamically assign your id to the project
+```
+export jcu_id="your_jcu_id"
+```
+11. Finally run the setup script in the same directory
+```
+bash ./setup.sh
+```
+10. Sit back and enjoy the show
 
 # Requirements
 - [x] Rename VPC (id-vcp)
@@ -40,5 +78,5 @@ sudo pacman -S aws-cli-v2
 
 # Modifications
 - [ ] Change name of variables
-- [ ] Change final website display
+- [ ] Change final website display (there's an example of a custom nodejs website being ran if you add the "custom argument after "setup.sh")
 - [ ] Change ami image (make sure to keep it a linux environment)
