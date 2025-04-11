@@ -9,7 +9,7 @@ the lab is terminated due to time limit.
 
 # Pre-Installation
 ## Windows
-- Download and Install git bash from [[here]](https://git-scm.com/downloads)
+- Download and Install git bash from [here](https://git-scm.com/downloads)
 - Launch "Git Bash" program on your machine
 - Run this command in git bash to install  aws-cli (v2) using msiexec
  ```
@@ -18,14 +18,12 @@ the lab is terminated due to time limit.
 
 ## MacOS
 - Open up the terminal on your machine
-- Run the following command to install homebrew (package manager) for macos:
+- Run the following command to install aws-cli (v2)
 ```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
 ```
-- Run the following command to use homebrew to install aws-cli (v2)
-```
-brew install awscli
-```
+
 
 ## Linux
 + Open up the terminal on your machine
