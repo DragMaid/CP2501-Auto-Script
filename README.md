@@ -38,10 +38,10 @@ sudo ./aws/install
 # Instructions
 1. Open the aws lab environment from the practical no.5 of the subject
 2. Start the aws lab session and wait for it to start
-3. Click on "AWS details" on the top right of the screen
+3. Click on "AWS details" on the top right of the screen <br>
 ![General Instructon 1 for AWS](/assets/instructions1.png)
 
-4. Click "show" in the AWS-CLI section and copy the credential
+4. Click "show" in the AWS-CLI section and copy the credential <br>
 ![General Instructon 2 for AWS](/assets/instructions2.png)
    
 5. Open terminal (or git bash) and set the region to "us-east-1"
