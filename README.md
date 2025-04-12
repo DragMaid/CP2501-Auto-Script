@@ -15,6 +15,10 @@ the lab is terminated due to time limit.
  ```
  powershell -Command "msiexec /i https://awscli.amazonaws.com/AWSCLIV2.msi /norestart"
  ```
+- Add the new aws cli path to bash current $PATH (providing you didn't change the default install location)
+```
+export PATH="$PATH:/c/Program Files/Amazon/AWSCLIV2"
+```
 
 ## MacOS
 - Open up the terminal on your machine
