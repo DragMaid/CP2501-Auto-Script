@@ -44,10 +44,12 @@ sudo ./aws/install
 4. Click "show" in the AWS-CLI section and copy the credential
 ![General Instructon 2 for AWS](/assets/instructions2.png)
    
-5. Open terminal (or git bash) and run aws configure (skip most prompts except "region") (insert "east-us-1)
-![General Instructon 2 for AWS](/assets/configure.png)
+5. Open terminal (or git bash) and set the region to "us-east-1"
+```
+aws configure set region us-east-1
+```
 
-6. Clone the repository back to your local machine
+7. Clone the repository back to your local machine
 ```
 git clone https://github.com/DragMaid/CP2501-Auto-Script.git
 ```
