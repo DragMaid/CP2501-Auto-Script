@@ -10,7 +10,7 @@
 ##############################################
 
 load_spin() {
-    pid=$! # PID of the background process
+    pid=$2 # PID of the background process
     spin=('-' '\' '|' '/') # Spinner animation frames
     echo -n "$1 ${spin[0]}"
     while kill -0 $pid 2>/dev/null; do
@@ -28,6 +28,8 @@ load_spin() {
     else
         echo -e "\b✗ Failed!"
     fi
+
+    return $exit_status
 }
 
 ##############################################
