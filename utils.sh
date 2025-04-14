@@ -19,7 +19,15 @@ load_spin() {
             sleep 0.1
         done
     done
-    echo -e "\b✓ Done!"
+
+    wait $pid
+    exit_status=$?
+
+    if [ $exit_status -eq 0 ]; then
+        echo -e "\b✓ Done!"
+    else
+        echo -e "\b✗ Failed!"
+    fi
 }
 
 ##############################################
