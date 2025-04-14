@@ -15,6 +15,10 @@ the lab is terminated due to time limit.
  ```
  powershell -Command "msiexec /i https://awscli.amazonaws.com/AWSCLIV2.msi /norestart"
  ```
+- Add the new aws cli path to bash current $PATH (providing you didn't change the default install location)
+```
+export PATH="$PATH:/c/Program Files/Amazon/AWSCLIV2"
+```
 
 ## MacOS
 - Open up the terminal on your machine
@@ -38,16 +42,18 @@ sudo ./aws/install
 # Instructions
 1. Open the aws lab environment from the practical no.5 of the subject
 2. Start the aws lab session and wait for it to start
-3. Click on "AWS details" on the top right of the screen
+3. Click on "AWS details" on the top right of the screen <br>
 ![General Instructon 1 for AWS](/assets/instructions1.png)
 
-4. Click "show" in the AWS-CLI section and copy the credential
+4. Click "show" in the AWS-CLI section and copy the credential <br>
 ![General Instructon 2 for AWS](/assets/instructions2.png)
    
-5. Open terminal (or git bash) and run aws configure (skip most prompts except "region") (insert "east-us-1)
-![General Instructon 2 for AWS](/assets/configure.png)
+5. Open terminal (or git bash) and set the region to "us-east-1"
+```
+aws configure set region us-east-1
+```
 
-6. Clone the repository back to your local machine
+7. Clone the repository back to your local machine
 ```
 git clone https://github.com/DragMaid/CP2501-Auto-Script.git
 ```

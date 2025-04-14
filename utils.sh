@@ -10,7 +10,7 @@
 ##############################################
 
 load_spin() {
-    pid=$! # PID of the background process
+    pid=$2 # PID of the background process
     spin=('-' '\' '|' '/') # Spinner animation frames
     echo -n "$1 ${spin[0]}"
     while kill -0 $pid 2>/dev/null; do
@@ -19,7 +19,17 @@ load_spin() {
             sleep 0.1
         done
     done
-    echo -e "\b✓ Done!"
+
+    wait $pid
+    exit_status=$?
+
+    if [ $exit_status -eq 0 ]; then
+        echo -e "\b✓ Done!"
+    else
+        echo -e "\b✗ Failed!"
+    fi
+
+    return $exit_status
 }
 
 ##############################################
@@ -32,10 +42,18 @@ load_spin() {
 
 async_task() {
     outfile=$(mktemp)
-    bash -c "$2" > "$outfile" &
-    load_spin "$3"
-    if [ ! "$1" == "" ]; then
-        eval "$1=$(<"$outfile")"
+    bash -c "$2" > "$outfile" 2>&1 &
+    pid=$!
+    load_spin "$3" "$pid"
+    exit_status=$?
+
+    if [ $exit_status -ne 0 ]; then
+        echo "----- Error Output -----"
+        cat "$outfile"
+        echo "------------------------"
+        exit $exit_status
+    elif [ ! -z "$1" ]; then
+        eval "$1=\"$(<"$outfile")\""
     fi
     rm "$outfile"
 }
