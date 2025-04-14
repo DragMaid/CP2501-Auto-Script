@@ -42,10 +42,18 @@ load_spin() {
 
 async_task() {
     outfile=$(mktemp)
-    bash -c "$2" > "$outfile" &
-    load_spin "$3"
-    if [ ! "$1" == "" ]; then
-        eval "$1=$(<"$outfile")"
+    bash -c "$2" > "$outfile" 2>&1 &
+    pid=$!
+    load_spin "$3" "$pid"
+    exit_status=$?
+
+    if [ $exit_status -ne 0 ]; then
+        echo "----- Error Output -----"
+        cat "$outfile"
+        echo "------------------------"
+        exit $exit_status
+    elif [ ! -z "$1" ]; then
+        eval "$1=\"$(<"$outfile")\""
     fi
     rm "$outfile"
 }
