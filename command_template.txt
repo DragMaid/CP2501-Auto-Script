@@ -1,0 +1,33 @@
+aws ec2 create-vpc --cidr-block 10.0.0.0/16
+aws ec2 create-tags --resources <vpc-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-subnet --vpc-id <vpc-id> --cidr-block 10.0.1.0/24
+aws ec2 create-tags --resources <subnet-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-subnet --vpc-id <vpc-id> --cidr-block 10.0.2.0/24
+aws ec2 create-tags --resources <subnet-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-internet-gateway
+aws ec2 create-tags --resources <internet-gateway-id> --tags Key=Name,Value=<tag-value>
+aws ec2 attach-internet-gateway --internet-gateway-id <internet-gateway-id> --vpc-id <vpc-id>
+aws ec2 allocate-address --domain vpc
+aws ec2 create-nat-gateway --subnet-id <public-subnet-id> --allocation-id <elastic-ip-address-id>
+aws ec2 create-tags --resources <nat-gateway-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-route-table --vpc-id <vpc-id>
+aws ec2 create-tags --resources <first-route-table-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-tags --resources <second-route-table-id> --tags Key=Name,Value=<tag-value>
+aws ec2 create-route --route-table-id <public-route-table-id> --destination-cidr-block 0.0.0.0/0 --gateway-id <internet-gateway-id>
+aws ec2 create-route --route-table-id <private-route-table-id> --destination-cidr-block 0.0.0.0/0 --gateway-id <nat-gateway-id>
+aws ec2 associate-route-table --route-table-id <public-route-table-id> --subnet-id <public-subnet-id>
+aws ec2 associate-route-table --route-table-id <private-route-table-id> --subnet-id <private-subnet-id>
+aws ec2 create-security-group --group-name <security-group-name> --description "<description>" --vpc-id <vpc-id>
+aws ec2 create-tags --resources <security-group-id> --tags Key=Name,Value=<tag-value>
+aws ec2 authorize-security-group-ingress --group-id <security-group-id> --protocol tcp --port 22 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id <security-group-id> --protocol tcp --port 80 --cidr 0.0.0.0/0
+aws ec2 create-key-pair --key-name cli-keyPair --query 'KeyMaterial' --output text > cli-keyPair.pem
+chmod 400 cli-keyPair.pem
+aws ec2 run-instances --image-id ami-0533f2ba8a1995cf9 --instance-type t2.micro --count 1 --subnet-id <public-subnet-id> --security-group-ids <security-group-id> --associate-public-ip-address --key-name cli-keyPair
+aws ec2 create-tags --resources <instance-id> --tags Key=Name,Value=<tag-value>
+aws ec2 describe-instances --instance-ids <instance-id> --query 'Reservations[].Instances[].PublicDnsName'
+ssh -i "cli-keyPair.pem" ec2-user@<instance-public-dns-name>
+sudo yum install httpd -y
+sudo service httpd start
+cd /var/www/html
+echo "<h1>Hello from <jcu_id> web server</h1>" > index.html
